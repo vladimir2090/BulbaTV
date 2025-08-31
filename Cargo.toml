@@ -2,5 +2,7 @@
 name = "BulbaTV"
 version = "0.1.0"
 edition = "2024"
-
+authors = ["https://github.com/vladimir2090"]
 [dependencies]
+lava_torrent = "0.11.1"
+hex = "0.4.3"
