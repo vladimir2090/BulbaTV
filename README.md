@@ -34,7 +34,7 @@ The project aims to provide seamless torrent streaming across local network devi
 ## 📋 TODO
 
 * [x] Core: Torrent file parsing and info extraction
-* [x] Configuration system via JSON
+* [x] Configuration system via YAML
 * [x] Modular code structure (torrent parsing separated)
 * [ ] Streaming server implementation
 * [ ] Network device discovery
@@ -57,7 +57,7 @@ The project aims to provide seamless torrent streaming across local network devi
 
 ### Configuration
 
-* JSON-based configuration system
+* YAML-based configuration system
 * Configurable torrent file paths
 * Modular architecture for easy extension
 

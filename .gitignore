@@ -1,9 +1,5 @@
-debug
-target
-.vscode
-
-**/*.rs.bk
-
+/debug
+/target
+/.vscode
+/.zed
 *.pdb
-
-**/mutants.out*/
