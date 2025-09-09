@@ -1,32 +1,37 @@
 mod torrentparse;
-mod http;
+//mod http;
 
-use std::error::Error;
-use std::fs::File;
-use std::io::BufReader;
+use anyhow::{anyhow, Result};
 use serde::Deserialize;
-use serde_yaml::from_reader;
-use torrentparse::TorrentInfo;
 use hex::encode;
+use torrentparse::TorrentInfo;
 
 #[derive(Deserialize)]
-#[warn(dead_code)]
+
 struct Config {
     path_torrent: String,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
-    let file = File::open("config.yaml")?;
-    let reader = BufReader::new(file);
-    let config: Config = from_reader(reader)?;
-    let info = TorrentInfo::from_file(&config.path_torrent)?;
+#[tokio::main]
+async fn main() -> Result<()> {
+    let config_bytes = tokio::fs::read("config.yaml").await?;
+    let config: Config = serde_yaml_ng::from_slice(&config_bytes)
+        .map_err(|e| anyhow!("[ERROR] failed to parse config.yaml: {}", e))?;
 
-    println!("Announce URL: {}", info.announce);
-    println!("Info hash (hex): {}", encode(&info.info_hash));
-    println!("Name: {}", info.name);
-    println!("Total size: {} bytes", info.total_length);
-    println!("Piece length: {} bytes", info.piece_length);
-    println!("Number of pieces: {}", info.pieces_count);
+    let join_handle = tokio::task::spawn_blocking(move || {
+        TorrentInfo::from_file(&config.path_torrent)
+    });
+
+    let info = join_handle
+        .await
+        .map_err(|e| anyhow!("[ERROR] spawn_blocking join error: {}", e))??;
+
+    println!("[MSG] Announce URL: {}", info.announce);
+    println!("[MSG] Info hash (hex): {}", encode(&info.info_hash));
+    println!("[MSG] Name: {}", info.name);
+    println!("[MSG] Total size: {} bytes", info.total_length);
+    println!("[MSG] Piece length: {} bytes", info.piece_length);
+    println!("[MSG] Number of pieces: {}", info.pieces_count);
 
     Ok(())
 }

@@ -47,18 +47,69 @@ The project aims to provide seamless torrent streaming across local network devi
 
 ---
 
-## 🔧 Current Functionality
+## 🔧 Installation
 
-### Torrent Processing
+1.Install Rust (1.70 or later):
 
-* Extracts torrent metadata including announce URLs
-* Generates info hashes for torrent identification
-* Based on `lava_torrent` crate for reliable parsing
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+2.Clone the repository:
+
+```bash
+git clone https://github.com/vladimir2090/BulbaTV.git
+cd BulbaTV
+```
+
+3.Create and configure `config.yaml`:
+
+```yaml
+path_torrent: "/path/to/file.torrent"
+```
+
+4.Build and run:
+
+```bash
+cargo run --release
+```
+
+---
+
+## 📦 Dependencies
+
+| Crate                                                           | Version | Purpose                |
+|-----------------------------------------------------------------|---------|------------------------|
+| [`tokio`](https://crates.io/crates/tokio)                       | 1.47    | Asynchronous runtime   |
+| [`anyhow`](https://crates.io/crates/anyhow)                     | 1.0     | Error handling         |
+| [`serde`](https://crates.io/crates/serde)                       | 1.0     | Serialization          |
+| [`serde_yaml_ng`](https://crates.io/crates/serde_yaml_ng)       | 0.10    | YAML parser            |
+| [`hex`](https://crates.io/crates/hex)                           | 0.4     | Hex encoding/decoding  |
+| [`lava_torrent`](https://crates.io/crates/lava_torrent)         | 0.11    | Torrent file parser    |
+| [`reqwest`](https://crates.io/crates/reqwest)                   | 0.12    | HTTP client            |
+| [`percent-encoding`](https://crates.io/crates/percent-encoding) | 2.3  | URL encoding        |
+
+For more details about each dependency, visit [crates.io](https://crates.io/).
+
+
+---
+
+## ⚙️ Current functionality
+
+### Torrent parsing
+
+* Extract metadata (announce URL, name, size, chunk sizes)
+* Generate SHA-1 hash of information for identification.
+* Used `lava_torrent` crate for reliable parsing.
 
 ### Configuration
 
-* YAML-based configuration system
-* Configurable torrent file paths
-* Modular architecture for easy extension
+* Read parameters from YAML file
+* Configurable path to torrent file
+* Easy extension of modular design.
 
 ---
+
+## License
+
+The project is distributed under the GPL-3.0 license.

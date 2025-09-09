@@ -20,7 +20,7 @@ impl TorrentInfo {
             .unwrap_or(torrent.length);
         let piece_length = torrent.piece_length;
         let pieces_count = torrent.pieces.len();
-        let info_hash = torrent.info_hash_bytes().to_vec();
+        let info_hash = torrent.info_hash_bytes().to_vec(); //if it don't work use torrent.info_hash()
         let announce = torrent
             .announce
             .clone()
